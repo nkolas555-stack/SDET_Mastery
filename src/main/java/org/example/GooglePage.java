@@ -1,23 +1,22 @@
 package org.example;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
-public class GooglePage {
+public class GooglePage { // Por ahora déjale el nombre para no romper nada
     WebDriver driver;
+    By searchBox = By.id("searchInput"); // ID de la barra de Wikipedia
+    By firstHeading = By.id("firstHeading"); // ID del título del resultado
 
-    // Localizador: El "id" de la barra de búsqueda
-    By searchBox = By.name("q");
-
-    // Constructor: Para que la página use el navegador que le mandemos
     public GooglePage(WebDriver driver) {
         this.driver = driver;
     }
 
-    // Acción: Escribir y buscar
     public void search(String text) {
-        driver.findElement(searchBox).sendKeys(text + Keys.ENTER);
+        driver.findElement(searchBox).sendKeys(text + "\n");
+    }
+
+    public String getTitleText() {
+        return driver.findElement(firstHeading).getText();
     }
 }
