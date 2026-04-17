@@ -6,22 +6,41 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
+/**
+ * BasePage class that centralizes Selenium WebDriver and WebDriverWait configuration.
+ * Implements the Page Object Model (POM) design pattern by providing common
+ * methods for web element interaction.
+ *
+ * @author Senior SDET - ESFM Engineer
+ */
 public class BasePage {
     protected WebDriver driver;
     protected WebDriverWait wait;
 
+    /**
+     * Constructor for the BasePage.
+     * @param driver WebDriver instance for navigation.
+     */
     public BasePage(WebDriver driver) {
         this.driver = driver;
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
-    // Método común para escribir (con espera incluida)
+    /**
+     * Performs an explicit wait and types text into a specific locator.
+     * @param locator The By locator of the element.
+     * @param text The string to be typed.
+     */
     protected void type(By locator, String text) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         driver.findElement(locator).sendKeys(text);
     }
 
-    // Método común para obtener texto
+    /**
+     * Waits for element visibility and retrieves its text.
+     * @param locator The By locator of the element.
+     * @return The visible text of the element.
+     */
     protected String getText(By locator) {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return driver.findElement(locator).getText();
