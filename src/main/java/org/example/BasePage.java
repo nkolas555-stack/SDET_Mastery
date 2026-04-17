@@ -11,7 +11,7 @@ import java.time.Duration;
  * Implements the Page Object Model (POM) design pattern by providing common
  * methods for web element interaction.
  *
- * @author Senior SDET - ESFM Engineer
+ * @author Senior SDET - ESFM Engineer Lorenzo Nicolas de la Cruz
  */
 public class BasePage {
     protected WebDriver driver;
