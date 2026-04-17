@@ -7,7 +7,12 @@ import org.openqa.selenium.WebDriver;
 public class GooglePage extends BasePage { // "extends" es la clave
 
     private By searchBox = By.id("searchInput");
-    public By firstHeading = By.id("firstHeading");
+    private By firstHeading = By.id("firstHeading");
+
+    // getter
+    public By getFirstHeadingLocator() {
+        return firstHeading;
+    }
 
     public GooglePage(WebDriver driver) {
         super(driver); // Llama al constructor del padre (BasePage)

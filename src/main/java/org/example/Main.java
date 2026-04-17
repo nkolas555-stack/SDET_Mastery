@@ -24,7 +24,7 @@ public class Main {
         wiki.search("Software Testing");
 
         // 4. ESPERA SENIOR: Esperamos a que el título sea visible antes de leerlo
-        wait.until(ExpectedConditions.visibilityOfElementLocated(wiki.firstHeading));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(wiki.getFirstHeadingLocator()));
 
         // 5. VALIDACIÓN
         String title = wiki.getTitleText();
