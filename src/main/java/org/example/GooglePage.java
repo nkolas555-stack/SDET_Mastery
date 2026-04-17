@@ -1,22 +1,23 @@
 package org.example;
 
 import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 
-public class GooglePage { // Por ahora déjale el nombre para no romper nada
-    WebDriver driver;
-    By searchBox = By.id("searchInput"); // ID de la barra de Wikipedia
-    By firstHeading = By.id("firstHeading"); // ID del título del resultado
+public class GooglePage extends BasePage { // "extends" es la clave
+
+    private By searchBox = By.id("searchInput");
+    public By firstHeading = By.id("firstHeading");
 
     public GooglePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver); // Llama al constructor del padre (BasePage)
     }
 
     public void search(String text) {
-        driver.findElement(searchBox).sendKeys(text + "\n");
+        type(searchBox, text + Keys.ENTER); // Usamos el método del padre
     }
 
     public String getTitleText() {
-        return driver.findElement(firstHeading).getText();
+        return getText(firstHeading); // Usamos el método del padre
     }
 }
