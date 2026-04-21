@@ -10,7 +10,7 @@ import org.openqa.selenium.WebDriver;
  */
 public class GooglePage extends BasePage { // "extends" es la clave
 
-    private By searchBox = By.id("searchInput");
+    private By searchBox = By.name("search");
     private By firstHeading = By.id("firstHeading");
 
     /**
