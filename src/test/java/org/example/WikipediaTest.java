@@ -10,6 +10,8 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.annotations.DataProvider;
 
+import java.io.IOException;
+
 /**
  * Test suite for Wikipedia functionality.
  * Implements TestNG lifecycle and ExtentReports for visual reporting.
@@ -39,19 +41,20 @@ public class WikipediaTest {
     }
 
     @Test(dataProvider = "searchData")
-    public void validateWikipediaSearch(String searchTerm) {
+    public void validateWikipediaSearch(String searchTerm) throws IOException {
         // we evaluate every term provided
         test = report.createTest("Validate Search: " + searchTerm);
 
         wiki.search(searchTerm);
         String title = wiki.getTitleText();
 
-        test.info("Executed search for: " + searchTerm);
+        // take tha picture:
+        String screenshotPath = wiki.takeScreenshot(searchTerm); // Use the saved method
+        test.pass("Search finished for: " + searchTerm).addScreenCaptureFromPath(screenshotPath); //put the picture in the report
 
         // The title should not be empty
-        Assert.assertFalse(title.isEmpty(), "The title should not be empty for: " + searchTerm);
+        Assert.assertFalse(title.isEmpty(), "Title is empty");
 
-        test.pass("Search successful for: " + searchTerm + ". Result title: " + title);
     }
 
     @AfterMethod

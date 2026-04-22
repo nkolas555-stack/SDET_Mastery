@@ -5,6 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.apache.commons.io.FileUtils;
+import java.io.File;
+import java.io.IOException;
 
 /**
  * BasePage class that centralizes Selenium WebDriver and WebDriverWait configuration.
@@ -45,4 +50,19 @@ public class BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return driver.findElement(locator).getText();
     }
+
+    public String takeScreenshot(String screenshotName) throws IOException {
+        File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+        // Relative path
+        String relativePath = "screenshots/" + screenshotName + ".png";
+        // Absolute path
+        String absolutePath = System.getProperty("user.dir") + "/target/" + relativePath;
+
+        File finalDestination = new File(absolutePath);
+        FileUtils.copyFile(source, finalDestination);
+
+        return relativePath; // IMPORTANT: RETURN THE RELATIV PATH
+    }
+
 }
