@@ -12,6 +12,12 @@ import org.testng.annotations.DataProvider;
 
 import java.io.IOException;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import java.io.FileReader;
+
+
 /**
  * Test suite for Wikipedia functionality.
  * Implements TestNG lifecycle and ExtentReports for visual reporting.
@@ -40,7 +46,7 @@ public class WikipediaTest {
         driver.get("https://wikipedia.org");
     }
 
-    @Test(dataProvider = "searchData")
+    @Test(dataProvider = "jsonDataReader")
     public void validateWikipediaSearch(String searchTerm) throws IOException {
         // we evaluate every term provided
         test = report.createTest("Validate Search: " + searchTerm);
@@ -71,13 +77,22 @@ public class WikipediaTest {
         report.flush();
     }
 
-    @DataProvider(name = "searchData")
-    public Object[][] getSearchData() {
-        return new Object[][] {
-                {"Software Testing"},
-                {"Java Programming"},
-                {"Selenium WebDriver"}
-        };
-    }
+    @DataProvider(name = "jsonDataReader")
+    public Object[][] getJsonData() throws Exception {
+        // 1. Load JSON File
+        JSONParser parser = new JSONParser();
+        FileReader reader = new FileReader("src/test/resources/testData.json");
+        Object obj = parser.parse(reader);
+        JSONArray dataList = (JSONArray) obj;
 
+        // 2. Matrixx of TestNG
+        Object[][] dataArray = new Object[dataList.size()][1];
+
+        for (int i = 0; i < dataList.size(); i++) {
+            JSONObject testCase = (JSONObject) dataList.get(i);
+            dataArray[i][0] = testCase.get("searchTerm"); // "searchTerm" matches with JSON File
+        }
+
+        return dataArray;
+    }
 }
