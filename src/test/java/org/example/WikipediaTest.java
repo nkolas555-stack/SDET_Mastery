@@ -46,7 +46,7 @@ public class WikipediaTest {
         driver.get("https://wikipedia.org");
     }
 
-    @Test(dataProvider = "jsonDataReader")
+    @Test(dataProvider = "excelData")//jsonDataReader
     public void validateWikipediaSearch(String searchTerm) throws IOException {
         // we evaluate every term provided
         test = report.createTest("Validate Search: " + searchTerm);
@@ -75,6 +75,12 @@ public class WikipediaTest {
     public void tearDownReport() {
         // Consolidate all test results and generate the final HTML file
         report.flush();
+    }
+
+    @DataProvider(name = "excelData")
+    public Object[][] getExcelData() throws IOException {
+        String path = "src/test/resources/testData.xlsx";
+        return ExcelReader.getTestData(path, "Sheet1");
     }
 
     @DataProvider(name = "jsonDataReader")
