@@ -23,8 +23,9 @@ import java.io.FileReader;
  * Implements TestNG lifecycle and ExtentReports for visual reporting.
  */
 public class WikipediaTest {
-    WebDriver driver;
     GooglePage wiki;
+
+    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
 
     // Reporting infrastructure
     static ExtentReports report;
@@ -38,12 +39,16 @@ public class WikipediaTest {
         report.attachReporter(spark);
     }
 
+    public WebDriver getDriver(){
+        return driver.get();
+    }
+
     @BeforeMethod
     public void setUp() {
         WebDriverManager.chromedriver().setup();
-        driver = new ChromeDriver();
-        wiki = new GooglePage(driver);
-        driver.get("https://wikipedia.org");
+        driver.set(new ChromeDriver());
+        wiki = new GooglePage(getDriver());
+        getDriver().get("https://wikipedia.org");
     }
 
     @Test(dataProvider = "excelData")//jsonDataReader
@@ -67,7 +72,8 @@ public class WikipediaTest {
     public void tearDown() {
         // Close the browser session after each test
         if (driver != null) {
-            driver.quit();
+            getDriver().quit();
+            driver.remove();
         }
     }
 
@@ -77,7 +83,7 @@ public class WikipediaTest {
         report.flush();
     }
 
-    @DataProvider(name = "excelData")
+    @DataProvider(name = "excelData", parallel = true)
     public Object[][] getExcelData() throws IOException {
         String path = "src/test/resources/testData.xlsx";
         return ExcelReader.getTestData(path, "Sheet1");

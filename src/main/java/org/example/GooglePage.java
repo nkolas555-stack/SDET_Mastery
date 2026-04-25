@@ -3,6 +3,7 @@ package org.example;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 /**
  * Page Object representing the search page (e.g., Wikipedia).
@@ -30,7 +31,10 @@ public class GooglePage extends BasePage { // "extends" es la clave
      * @param text The search term to be entered.
      */
     public void search(String text) {
-        type(searchBox, text + Keys.ENTER); // Usamos el método del padre
+
+        wait.until(ExpectedConditions.elementToBeClickable(searchBox));
+        driver.findElement(searchBox).clear(); // Limpiamos por si acaso
+        driver.findElement(searchBox).sendKeys(text + Keys.ENTER);
     }
 
     /**
