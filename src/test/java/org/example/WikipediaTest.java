@@ -51,7 +51,7 @@ public class WikipediaTest {
         getDriver().get("https://wikipedia.org");
     }
 
-    @Test(dataProvider = "excelData")//jsonDataReader
+    @Test(dataProvider = "excelData", retryAnalyzer = RetryAnalyzer.class)//jsonDataReader
     public void validateWikipediaSearch(String searchTerm) throws IOException {
         // we evaluate every term provided
         test = report.createTest("Validate Search: " + searchTerm);
