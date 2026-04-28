@@ -4,6 +4,7 @@
     <test name="Parallel Tests">
         <classes>
             <class name="org.example.WikipediaTest"/>
+            <class name="org.example.ApiTest"/>
         </classes>
     </test>
 </suite>
