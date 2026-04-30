@@ -19,4 +19,30 @@ public class ApiTest {
         System.out.println("✅ API FRAMEWORK IS ALIVE!");
     }
 
+    @Test
+    public void createUserTest() {
+
+        String jsonBody = "{" +
+                "  \"name\": \"Nicolas\"," +
+                "  \"job\": \"Senior SDET\"" +
+                "}";
+
+
+        given()
+                .header("Content-Type", "application/json")
+                .body(jsonBody)
+                .log().all()
+                .when()
+                .post("https://reqres.in/api/users")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .body("name", is("Nicolas"))
+                .body("job", is("Senior SDET"))
+                .body("id", notNullValue());
+
+        System.out.println("✅ API POST PASSED: Usuario creado con éxito.");
+    }
+
+
 }
