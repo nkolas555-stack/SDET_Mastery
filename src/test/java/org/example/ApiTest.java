@@ -5,6 +5,10 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
@@ -43,6 +47,25 @@ public class ApiTest {
 
         System.out.println("✅ API POST PASSED: Usuario creado con éxito.");
     }
+
+    @Test
+    public void createUserFromExternalFile() throws IOException {
+        String filePath = "src/test/resources/userPayload.json";
+        String jsonBody = new String(Files.readAllBytes(Paths.get(filePath)));
+
+        given()
+                .header("Content-Type", "application/json")
+                .body(jsonBody)
+                .when()
+                .post("https://jsonplaceholder.typicode.com/posts")
+                .then()
+                .log().all()
+                .statusCode(201)
+                .body("title", is("Lorenzo Nicolas"));
+
+        System.out.println("✅ API EXTERNAL DATA PASSED: ¡succesfully!");
+    }
+
 
 
 }
