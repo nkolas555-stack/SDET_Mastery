@@ -1,5 +1,7 @@
 package org.example;
 
+import com.aventstack.extentreports.ExtentReports;
+import com.aventstack.extentreports.ExtentTest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import org.testng.Assert;
@@ -13,6 +15,8 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 public class ApiTest {
+    static ExtentReports report = WikipediaTest.report; // Usamos el reporte que ya existe
+    static ExtentTest test;
     @Test
     public void validateGoogle() {
         // ok
@@ -65,7 +69,21 @@ public class ApiTest {
 
         System.out.println("✅ API EXTERNAL DATA PASSED: ¡succesfully!");
     }
+    @Test
+    public void validateSimpleApi() {
+        // 1. Creamos la entrada en el reporte
+        test = WikipediaTest.report.createTest("API Validation: Ping-Pong");
 
+        test.info("sending GET request to Vercel API...");
+
+        given()
+                .get("https://vercel.app/ping")
+                .then()
+                .statusCode(200)
+                .body("message", equalTo("pong"));
+
+        test.pass("API respond 200 and message 'pong'");
+    }
 
 
 }

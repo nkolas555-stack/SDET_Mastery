@@ -6,6 +6,7 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.annotations.DataProvider;
@@ -45,11 +46,19 @@ public class WikipediaTest {
 
     @BeforeMethod
     public void setUp() {
+        ChromeOptions options = new ChromeOptions();
+        options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
         WebDriverManager.chromedriver().setup();
-        driver.set(new ChromeDriver());
+
+        driver.set(new ChromeDriver(options));
+
         wiki = new GooglePage(getDriver());
         getDriver().get("https://wikipedia.org");
     }
+
 
     @Test(dataProvider = "excelData", retryAnalyzer = RetryAnalyzer.class)//jsonDataReader
     public void validateWikipediaSearch(String searchTerm) throws IOException {
