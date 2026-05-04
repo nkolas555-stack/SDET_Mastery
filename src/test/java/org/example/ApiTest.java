@@ -84,6 +84,11 @@ public class ApiTest {
 
         test.pass("API respond 200 and message 'pong'");
     }
+    @Test
+    public void cloudSanityTest() {
+        Assert.assertTrue(true, "Cloud execution is working!");
+        System.out.println("✅ CLOUD SANITY PASSED");
+    }
 
 
 }
