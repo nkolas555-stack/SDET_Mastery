@@ -11,6 +11,7 @@ import org.testng.Assert;
 import org.testng.annotations.*;
 import org.testng.annotations.DataProvider;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.json.simple.JSONArray;
@@ -50,6 +51,7 @@ public class WikipediaTest {
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--window-size=1920,1080");
 
         WebDriverManager.chromedriver().setup();
 
@@ -94,8 +96,9 @@ public class WikipediaTest {
 
     @DataProvider(name = "excelData", parallel = true)
     public Object[][] getExcelData() throws IOException {
-        String path = "src/test/resources/testData.xlsx";
-        return ExcelReader.getTestData(path, "Sheet1");
+        String rootPath = System.getProperty("user.dir");
+        String filePath = rootPath + File.separator + "src" + File.separator + "test" + File.separator + "resources" + File.separator + "testData.xlsx";
+        return ExcelReader.getTestData(filePath, "Sheet1");
     }
 
     @DataProvider(name = "jsonDataReader")

@@ -7,6 +7,7 @@ import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -54,7 +55,8 @@ public class ApiTest {
 
     @Test
     public void createUserFromExternalFile() throws IOException {
-        String filePath = "src/test/resources/userPayload.json";
+        String rootPath = System.getProperty("user.dir");
+        String filePath = rootPath + File.separator + "src" + File.separator + "test" + File.separator + "resources" + File.separator + "testData.xlsx";
         String jsonBody = new String(Files.readAllBytes(Paths.get(filePath)));
 
         given()
