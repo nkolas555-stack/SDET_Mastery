@@ -51,6 +51,11 @@ public class BasePage {
         return driver.findElement(locator).getText();
     }
 
+    public String getScreenshotBase64() {
+        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+    }
+
+
     public String takeScreenshot(String screenshotName) throws IOException {
         File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
 

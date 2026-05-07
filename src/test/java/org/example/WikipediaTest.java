@@ -74,7 +74,10 @@ public class WikipediaTest {
 
         // take tha picture:
         String screenshotPath = wiki.takeScreenshot(searchTerm); // Use the saved method
-        test.pass("Search finished for: " + searchTerm).addScreenCaptureFromPath(screenshotPath); //put the picture in the report
+      //  test.pass("Search finished for: " + searchTerm).addScreenCaptureFromPath(screenshotPath); //put the picture in the report
+
+        test.pass("Search finished")
+                .addScreenCaptureFromBase64String(wiki.getScreenshotBase64(), "Evidence");
 
         // The title should not be empty
         Assert.assertFalse(title.isEmpty(), "Title is empty");
