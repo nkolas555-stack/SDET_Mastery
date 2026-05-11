@@ -24,8 +24,8 @@ jobs:
         run: mvn test -DsuiteXmlFile=testng.xml
 
       - name: Upload Test Report
-        if: always() # IMPORTANTE: Esto hace que suba el reporte aunque el test falle
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: execution-report # Nombre del archivo ZIP
-          path: target/Senior_Execution_Report.html # La ruta de tu reporte
+          name: execution-report
+          path: target/Senior_Execution_Report.html

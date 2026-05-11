@@ -18,6 +18,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import java.io.FileReader;
+import com.epam.healenium.SelfHealingDriver;
 
 
 /**
@@ -57,7 +58,11 @@ public class WikipediaTest {
 
         WebDriverManager.chromedriver().setup();
 
-        driver.set(new ChromeDriver(options));
+        WebDriver delegate = new ChromeDriver(options);
+
+        driver.set(SelfHealingDriver.create(delegate));
+
+
 
         wiki = new GooglePage(getDriver());
         getDriver().get("https://wikipedia.org");
