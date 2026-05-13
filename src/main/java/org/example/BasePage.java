@@ -1,12 +1,10 @@
 package org.example;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
+
 import org.apache.commons.io.FileUtils;
 import java.io.File;
 import java.io.IOException;
@@ -37,9 +35,19 @@ public class BasePage {
      * @param text The string to be typed.
      */
     protected void type(By locator, String text) {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
-        driver.findElement(locator).sendKeys(text);
+        try {
+            wait.until(org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable(locator));
+            org.openqa.selenium.WebElement element = driver.findElement(locator);
+            element.clear();
+            element.sendKeys(text);
+        } catch (org.openqa.selenium.StaleElementReferenceException e) {
+            wait.until(org.openqa.selenium.support.ui.ExpectedConditions.elementToBeClickable(locator));
+            org.openqa.selenium.WebElement element = driver.findElement(locator);
+            element.clear();
+            element.sendKeys(text);
+        }
     }
+
 
     /**
      * Waits for element visibility and retrieves its text.
@@ -50,24 +58,30 @@ public class BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(locator));
         return driver.findElement(locator).getText();
     }
-
     public String getScreenshotBase64() {
-        return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BASE64);
+        org.openqa.selenium.WebDriver baseDriver = driver;
+        if (driver instanceof com.epam.healenium.SelfHealingDriver) {
+            baseDriver = ((com.epam.healenium.SelfHealingDriver) driver).getDelegate();
+        }
+        return ((org.openqa.selenium.TakesScreenshot) baseDriver).getScreenshotAs(org.openqa.selenium.OutputType.BASE64);
     }
 
+    public String takeScreenshot(String screenshotName) throws java.io.IOException {
+        org.openqa.selenium.WebDriver baseDriver = driver;
+        if (driver instanceof com.epam.healenium.SelfHealingDriver) {
+            baseDriver = ((com.epam.healenium.SelfHealingDriver) driver).getDelegate();
+        }
+        java.io.File source = ((org.openqa.selenium.TakesScreenshot) baseDriver).getScreenshotAs(org.openqa.selenium.OutputType.FILE);
 
-    public String takeScreenshot(String screenshotName) throws IOException {
-        File source = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
-
-        // Relative path
         String relativePath = "screenshots/" + screenshotName + ".png";
-        // Absolute path
         String absolutePath = System.getProperty("user.dir") + "/target/" + relativePath;
 
-        File finalDestination = new File(absolutePath);
-        FileUtils.copyFile(source, finalDestination);
+        java.io.File finalDestination = new java.io.File(absolutePath);
+        org.apache.commons.io.FileUtils.copyFile(source, finalDestination);
 
-        return relativePath; // IMPORTANT: RETURN THE RELATIV PATH
+        return relativePath;
     }
+
+
 
 }
